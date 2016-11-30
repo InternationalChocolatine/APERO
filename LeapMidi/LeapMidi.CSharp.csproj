@@ -61,22 +61,20 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Sanford.Multimedia.Midi">
-      <HintPath>Assets\Sanford.Multimedia.Midi.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <HintPath>Assets\System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <HintPath>Assets\System.Windows.Forms.dll</HintPath>
-    </Reference>
     <Reference Include="LeapCSharp.NET3.5">
       <HintPath>Assets\Plugins\LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>Assets\Lib\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>Assets\Lib\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Sanford.Multimedia.Midi">
+      <HintPath>Assets\Lib\Sanford.Multimedia.Midi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ButtonTrigger.cs" />
-    <Compile Include="Assets\ColliderScript.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\Algorithms\SlidingMax.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\Algorithms\SmoothedFloat.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\Algorithms\SmoothedQuaternion.cs" />
@@ -143,8 +141,10 @@
     <Compile Include="Assets\LeapMotion\Scripts\VR\LeapVRTemporalWarping.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\VR\TemporalWarpingStatus.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\VR\VRHeightOffset.cs" />
-    <Compile Include="Assets\MidiScript.cs" />
-    <Compile Include="Assets\teVirtualMIDI.cs" />
+    <Compile Include="Assets\Scripts\ButtonTrigger.cs" />
+    <Compile Include="Assets\Scripts\ColliderScript.cs" />
+    <Compile Include="Assets\Scripts\MidiScript.cs" />
+    <Compile Include="Assets\Scripts\teVirtualMIDI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LeapMotion\Dependencies.txt" />

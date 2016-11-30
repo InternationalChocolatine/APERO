@@ -92,13 +92,13 @@
       <HintPath>Assets\Plugins\LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms">
-      <HintPath>Assets\System.Windows.Forms.dll</HintPath>
+      <HintPath>Assets\Lib\System.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing">
-      <HintPath>Assets\System.Drawing.dll</HintPath>
+      <HintPath>Assets\Lib\System.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="Sanford.Multimedia.Midi">
-      <HintPath>Assets\Sanford.Multimedia.Midi.dll</HintPath>
+      <HintPath>Assets\Lib\Sanford.Multimedia.Midi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
