@@ -6,12 +6,18 @@ public class PotentiometerBehaviour : MonoBehaviour {
     private bool grabbed;
     private Controller controller;
     private float refAngle;
+    private float totalRotation = 0;
+    private byte value = 0;
+    const float minAngle = -(Mathf.PI * 5/6);
+    const float maxAngle = - minAngle;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         controller = new Controller();
         grabbed = false;
-	}
+        Debug.Log("min is " + minAngle);
+        Debug.Log("max is " + maxAngle);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,9 +29,9 @@ public class PotentiometerBehaviour : MonoBehaviour {
             {
                 if(handList[i].IsLeft != isRightHand)
                 {
-                    currentAngle = -handList[i].Direction.Roll + (handList[i].Direction.Roll / Mathf.Abs(handList[i].Direction.Roll)) * Mathf.PI;
-                    Debug.Log("Updated! new value is " + currentAngle);
-                    transform.Rotate(Vector3.up, 20 * (currentAngle - refAngle));
+                    float roll = handList[i].Direction.Roll;
+                    currentAngle = -roll + (roll / Mathf.Abs(roll)) * Mathf.PI;
+                    updateOrientation(2*(currentAngle - refAngle));
                     refAngle = currentAngle;
                 }
             }
@@ -42,8 +48,8 @@ public class PotentiometerBehaviour : MonoBehaviour {
         {
             if(handList[i].IsLeft != isRightHand)
             {
-                refAngle = -handList[i].Direction.Roll + (handList[i].Direction.Roll / Mathf.Abs(handList[i].Direction.Roll)) * Mathf.PI;
-                Debug.Log("Initial value is " + refAngle);
+                float roll = handList[i].Direction.Roll;
+                refAngle = -roll + (roll / Mathf.Abs(roll)) * Mathf.PI;
             }
         }
 
@@ -56,5 +62,27 @@ public class PotentiometerBehaviour : MonoBehaviour {
         grabbed = false;
         MeshRenderer mr = GetComponent<MeshRenderer>();
         mr.material.color = Color.white;
+    }
+
+    private void updateOrientation(float angle)
+    {
+        // Bounded rotation
+        if(totalRotation + angle < minAngle)
+        {
+            transform.Rotate(Vector3.up, 180/Mathf.PI * (minAngle - totalRotation));
+            totalRotation = minAngle;
+        }
+        else if (totalRotation + angle > maxAngle)
+        {
+            transform.Rotate(Vector3.up, 180/Mathf.PI * (maxAngle - totalRotation));
+            totalRotation = maxAngle;
+        }
+        else
+        {
+            transform.Rotate(Vector3.up, 180 / Mathf.PI * (angle));
+            totalRotation += angle;
+        }
+        value = (byte)((totalRotation + maxAngle)/(2*maxAngle) * 127); // okay as long interval is symetric
+        Debug.Log("value is " + value);
     }
 }
