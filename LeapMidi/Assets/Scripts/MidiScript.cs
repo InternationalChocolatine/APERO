@@ -4,14 +4,16 @@ using TobiasErichsen.teVirtualMIDI;
 using System;
 using System.Threading;
 using System.Runtime.InteropServices;
+using Sanford.Multimedia.Midi;
 
 public class MidiScript : MonoBehaviour
 {
 
     public TeVirtualMIDI midiPort;
+    public string portName;
     Thread midiThread;
+    public static OutputDevice outputDevice;
 
-    
 
     // Use this for initialization
     void Start()
@@ -19,6 +21,7 @@ public class MidiScript : MonoBehaviour
         midiPort = startMidiPort();
         midiThread = new Thread(new ThreadStart(SendReceiveMIDI));
         midiThread.Start();
+        outputDevice = new OutputDevice(getMidiPortID());
     }
 
     // Update is called once per frame
@@ -47,7 +50,7 @@ public class MidiScript : MonoBehaviour
         Guid manufacturer = new Guid("aa4e075f-3504-4aab-9b06-9a4104a91cf0");
         Guid product = new Guid("bb4e075f-3504-4aab-9b06-9a4104a91cf0");
 
-        TeVirtualMIDI port = new TeVirtualMIDI("LeapMidi2", 65535, TeVirtualMIDI.TE_VM_FLAGS_PARSE_RX, ref manufacturer, ref product);
+        TeVirtualMIDI port = new TeVirtualMIDI(portName, 65535, TeVirtualMIDI.TE_VM_FLAGS_PARSE_RX, ref manufacturer, ref product);
         Debug.Log("Midi Port started !");
         return port;
     }

@@ -4,7 +4,6 @@ using Sanford.Multimedia.Midi;
 public class ButtonTrigger : MonoBehaviour {
 
     private Collider initialObject;
-    private int id;
     private bool oneIn;
     public float force;
     public byte midiID;
@@ -14,12 +13,7 @@ public class ButtonTrigger : MonoBehaviour {
     // Use this for initialization
     void Start () {
         oneIn = false;
-
-        id = MidiScript.getMidiPortID();
-        if (outputDevice == null)
-        {
-            outputDevice = new OutputDevice(id);
-        }
+        outputDevice = MidiScript.outputDevice;
     }
 	
 	// Update is called once per frame

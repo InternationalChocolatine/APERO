@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Leap;
+using Sanford.Multimedia.Midi;
 
 public class PotentiometerBehaviour : MonoBehaviour {
     private bool isRightHand;
@@ -10,11 +11,15 @@ public class PotentiometerBehaviour : MonoBehaviour {
     private byte value = 0;
     const float minAngle = -(Mathf.PI * 5/6);
     const float maxAngle = - minAngle;
+    OutputDevice outputDevice;
+    public byte midiID;
+
 
     // Use this for initialization
     void Start () {
         controller = new Controller();
         grabbed = false;
+        outputDevice = MidiScript.outputDevice;
         Debug.Log("min is " + minAngle);
         Debug.Log("max is " + maxAngle);
     }
@@ -84,5 +89,7 @@ public class PotentiometerBehaviour : MonoBehaviour {
         }
         value = (byte)((totalRotation + maxAngle)/(2*maxAngle) * 127); // okay as long interval is symetric
         Debug.Log("value is " + value);
+        ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, midiID, value);
+        outputDevice.Send(message);
     }
 }
