@@ -26,7 +26,7 @@ public class ButtonTrigger : MonoBehaviour {
         if (!oneIn)
         {
             ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOn, 0, midiID, 127);
-            outputDevice.Send(message);
+        //    outputDevice.Send(message);
             initialObject = other;
             oneIn = true;
         }
