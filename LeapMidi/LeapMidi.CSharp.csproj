@@ -142,10 +142,14 @@
     <Compile Include="Assets\LeapMotion\Scripts\VR\TemporalWarpingStatus.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\VR\VRHeightOffset.cs" />
     <Compile Include="Assets\Scripts\ButtonTrigger.cs" />
+    <Compile Include="Assets\Scripts\ChannelSwitch.cs" />
     <Compile Include="Assets\Scripts\ColliderScript.cs" />
+    <Compile Include="Assets\Scripts\ControlHandTracker.cs" />
+    <Compile Include="Assets\Scripts\MidiController.cs" />
     <Compile Include="Assets\Scripts\MidiScript.cs" />
     <Compile Include="Assets\Scripts\PotentiometerBehaviour.cs" />
     <Compile Include="Assets\Scripts\SliderScript.cs" />
+    <Compile Include="Assets\Scripts\TriggerZoneScript.cs" />
     <Compile Include="Assets\Scripts\teVirtualMIDI.cs" />
   </ItemGroup>
   <ItemGroup>

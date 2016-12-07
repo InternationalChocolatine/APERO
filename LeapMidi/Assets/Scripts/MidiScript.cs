@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using TobiasErichsen.teVirtualMIDI;
 using System;
 using System.Threading;
@@ -13,7 +12,6 @@ public class MidiScript : MonoBehaviour
     public string portName;
     Thread midiThread;
     public static OutputDevice outputDevice;
-
 
     // Use this for initialization
     void Start()
