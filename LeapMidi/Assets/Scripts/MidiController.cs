@@ -149,44 +149,50 @@ public class MidiController : MonoBehaviour
 
     private static void updatePosition(float position)
     {
-        if(totalPosition + position < minPosition)
+        if(position != 0)
         {
-            totalPosition = minPosition;
-        }
-        else if (totalPosition + position > maxPosition)
-        {
-            totalPosition = maxPosition;
-        }
-        else
-        {
-            totalPosition += position;
-        }
+            if (totalPosition + position < minPosition)
+            {
+                totalPosition = minPosition;
+            }
+            else if (totalPosition + position > maxPosition)
+            {
+                totalPosition = maxPosition;
+            }
+            else
+            {
+                totalPosition += position;
+            }
 
-        positionValue = (byte)((totalPosition + maxPosition) / (2 * maxPosition) * 127);
-        ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset, rotationValue);
-        st_text0.text = positionValue.ToString();
-        outputDevice.Send(message);
+            positionValue = (byte)((totalPosition + maxPosition) / (2 * maxPosition) * 127);
+            ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset, positionValue);
+            st_text0.text = positionValue.ToString();
+            outputDevice.Send(message);
+        }
     }
 
     private static void updateOrientation(float angle)
     {
-        // Bounded rotation
-        if (totalRotation + angle < minAngle)
+        if(angle != 0)
         {
-            totalRotation = minAngle;
-        }
-        else if (totalRotation + angle > maxAngle)
-        {
-            totalRotation = maxAngle;
-        }
-        else
-        {
-            totalRotation += angle;
-        }
-        rotationValue = (byte)((totalRotation + maxAngle) / (2 * maxAngle) * 127); // okay as long interval is symetric
-        
-        ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset + 1, rotationValue);
-        outputDevice.Send(message);
+            // Bounded rotation
+            if (totalRotation + angle < minAngle)
+            {
+                totalRotation = minAngle;
+            }
+            else if (totalRotation + angle > maxAngle)
+            {
+                totalRotation = maxAngle;
+            }
+            else
+            {
+                totalRotation += angle;
+            }
+            rotationValue = (byte)((totalRotation + maxAngle) / (2 * maxAngle) * 127); // okay as long interval is symetric
+
+            ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset + 1, rotationValue);
+            outputDevice.Send(message);
+        }  
     }
 
 }

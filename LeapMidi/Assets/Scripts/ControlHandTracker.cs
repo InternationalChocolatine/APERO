@@ -7,7 +7,11 @@ public class ControlHandTracker : MonoBehaviour
     private static float rollRef;
     private static bool track = false;
     private static bool rightHand;
+    private static bool handClosed;
     private static Controller controller;
+    private static float positionThreshold = 150f;
+    private static float rotationThreshold = 0.7f;
+
 
     // Use this for initialiyation
     void Start()
@@ -26,12 +30,32 @@ public class ControlHandTracker : MonoBehaviour
                 {
                     float yPos = hand.PalmPosition.y;
                     float roll = -hand.PalmNormal.Roll;
-                    //float currentAngle = -roll + (roll / Mathf.Abs(roll)) * Mathf.PI;
-                    MidiController.setValues(yPos - yRef, (roll - rollRef));
-                    //Debug.Log("height difference is " + (yPos - yRef));
-                    //Debug.Log("roll difference is " + (roll - rollRef));
-                    yRef = yPos;
-                    rollRef = roll;
+                    float DeltaPos = yPos - yRef;
+                    float DeltaRoll = roll - rollRef;
+                    
+                    //Handling setup mode
+                    //Position
+                    if(handClosed && Mathf.Abs(DeltaPos) < positionThreshold)
+                    {
+                        DeltaPos = 0.0f;
+                    }
+                    else
+                    {
+                        yRef = yPos;
+                    }
+
+                    //Rotation
+                    if(handClosed && Mathf.Abs(DeltaRoll) < rotationThreshold)
+                    {
+                        DeltaRoll = 0.0f;
+                    }
+                    else
+                    {
+                        Debug.Log("DeltaRoll :" + DeltaRoll);
+                        rollRef = roll;
+                    }
+
+                    MidiController.setValues(DeltaPos, DeltaRoll);                    
                 }
             }
         }
@@ -47,12 +71,16 @@ public class ControlHandTracker : MonoBehaviour
             {
                 float yPos = hand.PalmPosition.y;
                 float roll = -hand.PalmNormal.Roll;
-                //float currentAngle = -roll + (roll / Mathf.Abs(roll)) * Mathf.PI;
 
                 yRef = yPos;
                 rollRef = roll;
             }
         }
+    }
+
+    public static void setStaticHandIsClosed(bool closed)
+    {
+        handClosed = closed;
     }
 
     public static void stopTracking()

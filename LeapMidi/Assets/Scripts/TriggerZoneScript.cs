@@ -8,6 +8,7 @@ public class TriggerZoneScript : MonoBehaviour
     private bool facingUp;
     private HandModel handModel;
     bool handIsSet;
+    bool handIsClosed;
 
     // Use this for initialization
     void Start()
@@ -22,7 +23,6 @@ public class TriggerZoneScript : MonoBehaviour
     {
        if(handModel != null)
         {
-            Debug.Log(handModel.GetPalmPosition());
             if (this.GetComponent<Collider>().bounds.Contains(handModel.GetPalmPosition()))
             {
                 if (!handIsSet)
@@ -36,6 +36,13 @@ public class TriggerZoneScript : MonoBehaviour
                     Debug.Log("palm facing Up : " + res);
                     facingUp = res;
                     MidiController.setPalmFacingUp(facingUp);
+                }
+                bool closed = handModel.GetLeapHand().GrabStrength > 0.6;
+                if (closed != handIsClosed)
+                {
+                    Debug.Log("hand is closed : " + closed);
+                    handIsClosed = closed;
+                    ControlHandTracker.setStaticHandIsClosed(handIsClosed);
                 }
             }
             else if (handIsSet)
