@@ -88,17 +88,17 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="LeapCSharp.NET3.5">
-      <HintPath>Assets\Plugins\LeapCSharp.NET3.5.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <HintPath>Assets\Lib\System.Windows.Forms.dll</HintPath>
+    <Reference Include="Sanford.Multimedia.Midi">
+      <HintPath>Assets\Lib\Sanford.Multimedia.Midi.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing">
       <HintPath>Assets\Lib\System.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="Sanford.Multimedia.Midi">
-      <HintPath>Assets\Lib\Sanford.Multimedia.Midi.dll</HintPath>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>Assets\Lib\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="LeapCSharp.NET3.5">
+      <HintPath>Assets\Plugins\LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

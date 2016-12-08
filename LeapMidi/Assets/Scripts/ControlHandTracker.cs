@@ -14,8 +14,8 @@ public class ControlHandTracker : MonoBehaviour
     private static float rotationThreshold = 0.7f;
 
     public static bool pinched = false;
-    public const int PINCH_DISTANCE_ON_THRESHOLD = 15;
-    public const int PINCH_DISTANCE_OFF_THRESHOLD = 20;
+    public const float GRAB_ON_THRESHOLD = 0.8f;
+    public const float GRAB_OFF_THRESHOLD = 0.6f;
 
 
     // Use this for initialiyation
@@ -56,22 +56,23 @@ public class ControlHandTracker : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("DeltaRoll :" + DeltaRoll);
                         rollRef = roll;
                     }
 
-                    MidiController.setValues(DeltaPos, DeltaRoll);                    
-                }
+                    MidiController.setValues(DeltaPos, DeltaRoll);
 
-                if (!pinched && hand.PinchDistance < PINCH_DISTANCE_ON_THRESHOLD)
-                {
-                    pinched = true;
-                    MidiController.setPinched();
-                } 
-                else if (pinched && hand.PinchDistance >= PINCH_DISTANCE_OFF_THRESHOLD)
-                {
-                    pinched = false;
-                    MidiController.setUnpinched();
+                    if (!pinched && hand.GrabStrength > GRAB_ON_THRESHOLD)
+                    {
+                        Debug.Log("Pinched !");
+                        pinched = true;
+                        MidiController.setPinched();
+                    }
+                    else if (pinched && hand.GrabStrength <= GRAB_OFF_THRESHOLD)
+                    {
+                        Debug.Log("Unpiched !");
+                        pinched = false;
+                        MidiController.setUnpinched();
+                    }
                 }
             }
         }

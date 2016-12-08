@@ -203,7 +203,7 @@ public class MidiController : MonoBehaviour
 
     public static void setUnpinched()
     {
-        ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOff, 0, activeSwitch.channelGroup + offset + 2, 0);
+        ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOff, 0, activeSwitch.channelGroup + offset + 2, 127);
         outputDevice.Send(message);
     }
 }
