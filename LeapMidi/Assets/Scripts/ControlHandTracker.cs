@@ -8,6 +8,9 @@ public class ControlHandTracker : MonoBehaviour
     private static bool track = false;
     private static bool rightHand;
     private static Controller controller;
+    public static bool pinched = false;
+    public const int PINCH_DISTANCE_ON_THRESHOLD = 15;
+    public const int PINCH_DISTANCE_OFF_THRESHOLD = 20;
 
     // Use this for initialiyation
     void Start()
@@ -32,6 +35,17 @@ public class ControlHandTracker : MonoBehaviour
                     //Debug.Log("roll difference is " + (roll - rollRef));
                     yRef = yPos;
                     rollRef = roll;
+                }
+
+                if (!pinched && hand.PinchDistance < PINCH_DISTANCE_ON_THRESHOLD)
+                {
+                    pinched = true;
+                    MidiController.setPinched();
+                } 
+                else if (pinched && hand.PinchDistance >= PINCH_DISTANCE_OFF_THRESHOLD)
+                {
+                    pinched = false;
+                    MidiController.setUnpinched();
                 }
             }
         }

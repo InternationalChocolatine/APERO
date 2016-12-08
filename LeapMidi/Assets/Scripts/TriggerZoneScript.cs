@@ -22,7 +22,6 @@ public class TriggerZoneScript : MonoBehaviour
     {
        if(handModel != null)
         {
-            Debug.Log(handModel.GetPalmPosition());
             if (this.GetComponent<Collider>().bounds.Contains(handModel.GetPalmPosition()))
             {
                 if (!handIsSet)

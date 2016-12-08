@@ -189,4 +189,15 @@ public class MidiController : MonoBehaviour
         outputDevice.Send(message);
     }
 
+    public static void setPinched()
+    {
+        ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOn, 0, activeSwitch.channelGroup + offset + 2, 127);
+        outputDevice.Send(message);
+    }
+
+    public static void setUnpinched()
+    {
+        ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOff, 0, activeSwitch.channelGroup + offset + 2, 0);
+        outputDevice.Send(message);
+    }
 }
