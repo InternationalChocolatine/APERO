@@ -8,38 +8,46 @@ using UnityEngine.UI;
 
 public class MidiController : MonoBehaviour
 {
+    private static MidiController instance;
     private TeVirtualMIDI midiVirtualDevice;
     public string virtualPortName;
     private Thread midiThread;
     private static OutputDevice outputDevice;
-    private static ChannelSwitch activeSwitch;
+    private ChannelSwitch activeSwitch;
     private bool handIsRight = true;
-    private static int offset;
-    public static bool palmFacingUp;
+    private int offset;
+    public bool palmFacingUp;
     public Text text0;
-    private static Text st_text0;
 
     //Rotation
-    private static float totalRotation = 0;
-    private static byte rotationValue = 0;
+    private float totalRotation = 0;
+    private byte rotationValue = 0;
     const float minAngle = -(Mathf.PI / 4);
     const float maxAngle = -minAngle;
 
     //Position
-    private static float totalPosition = 0;
-    private static byte positionValue = 0;
+    private float totalPosition = 0;
+    private byte positionValue = 0;
     const float minPosition = -150.0f;
     const float maxPosition = -minPosition;
 
+    //Channel values
+    private float[] channelTotalValues = new float[128];
+
+
+    public static MidiController getInstance()
+    {
+        return instance;
+    }
 
     // Use this for initialization
     void Start()
     {
+        instance = this;
         midiVirtualDevice = startMidiPort();
         midiThread = new Thread(new ThreadStart(SendReceiveMIDI));
         midiThread.Start();
         outputDevice = new OutputDevice(getMidiPortID());
-        st_text0 = text0;
     }
 
     // Update is called once per frame
@@ -105,16 +113,22 @@ public class MidiController : MonoBehaviour
         return midiOutGetNumDevs() - 1;
     }
 
-    public static void setChannelGroup(ChannelSwitch activated)
+    public void setChannelGroup(ChannelSwitch activated)
     {
-        if(activeSwitch != null)
+        if (activeSwitch != null)
         {
             activeSwitch.Deactivate();
+            channelTotalValues[activeSwitch.channelGroup + offset] = totalPosition;
+            channelTotalValues[activeSwitch.channelGroup + offset + 1] = totalRotation;
         }
-        activeSwitch = activated;
+
+            activeSwitch = activated;
+
+        totalPosition = channelTotalValues[activeSwitch.channelGroup + offset];
+        totalRotation = channelTotalValues[activeSwitch.channelGroup + offset + 1];
     }
 
-    public static int getChannelGroup()
+    public int getChannelGroup()
     {
         if(activeSwitch == null)
         {
@@ -123,7 +137,7 @@ public class MidiController : MonoBehaviour
         return activeSwitch.channelGroup;
     }
 
-    public static void setPalmFacingUp(bool palmFacing)
+    public void setPalmFacingUp(bool palmFacing)
     {
         palmFacingUp = palmFacing;
         if (palmFacingUp)
@@ -136,18 +150,16 @@ public class MidiController : MonoBehaviour
         }
     }
 
-    public static void setValues(float height, float roll)
+    public void setValues(float height, float roll)
     {
-        if(activeSwitch != null)
+        if (activeSwitch != null)
         {
             updatePosition(height);
             updateOrientation(roll);
-
         }
-
     }
 
-    private static void updatePosition(float position)
+    private void updatePosition(float position)
     {
         if(position != 0)
         {
@@ -166,12 +178,12 @@ public class MidiController : MonoBehaviour
 
             positionValue = (byte)((totalPosition + maxPosition) / (2 * maxPosition) * 127);
             ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset, positionValue);
-            st_text0.text = positionValue.ToString();
+            text0.text = positionValue.ToString();
             outputDevice.Send(message);
         }
     }
 
-    private static void updateOrientation(float angle)
+    private void updateOrientation(float angle)
     {
         if(angle != 0)
         {
@@ -195,13 +207,13 @@ public class MidiController : MonoBehaviour
         }  
     }
 
-    public static void setPinched()
+    public void setPinched()
     {
         ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOn, 0, activeSwitch.channelGroup + offset + 2, 127);
         outputDevice.Send(message);
     }
 
-    public static void setUnpinched()
+    public void setUnpinched()
     {
         ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOff, 0, activeSwitch.channelGroup + offset + 2, 127);
         outputDevice.Send(message);

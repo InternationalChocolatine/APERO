@@ -3,24 +3,30 @@ using Leap;
 
 public class ControlHandTracker : MonoBehaviour
 {
-    private static float yRef;
-    private static float rollRef;
-    private static bool track = false;
-    private static bool rightHand;
-    private static bool handClosed;
-    private static Controller controller;
+    private static ControlHandTracker instance;
+    private float yRef;
+    private float rollRef;
+    private bool track = false;
+    private bool rightHand;
+    private bool handClosed;
+    private Controller controller;
 
-    private static float positionThreshold = 150f;
-    private static float rotationThreshold = 0.7f;
+    private float positionThreshold = 150f;
+    private float rotationThreshold = 0.7f;
 
-    public static bool pinched = false;
+    public bool pinched = false;
     public const float GRAB_ON_THRESHOLD = 0.8f;
     public const float GRAB_OFF_THRESHOLD = 0.6f;
 
+    public static ControlHandTracker getInstance()
+    {
+        return instance;
+    }
 
     // Use this for initialiyation
     void Start()
     {
+        instance = this;
         controller = new Controller();
     }
 
@@ -59,26 +65,26 @@ public class ControlHandTracker : MonoBehaviour
                         rollRef = roll;
                     }
 
-                    MidiController.setValues(DeltaPos, DeltaRoll);
+                    MidiController.getInstance().setValues(DeltaPos, DeltaRoll);
 
                     if (!pinched && hand.GrabStrength > GRAB_ON_THRESHOLD)
                     {
                         Debug.Log("Pinched !");
                         pinched = true;
-                        MidiController.setPinched();
+                        MidiController.getInstance().setPinched();
                     }
                     else if (pinched && hand.GrabStrength <= GRAB_OFF_THRESHOLD)
                     {
                         Debug.Log("Unpiched !");
                         pinched = false;
-                        MidiController.setUnpinched();
+                        MidiController.getInstance().setUnpinched();
                     }
                 }
             }
         }
     }
 
-    public static void setControllingHandIsRight(bool isRight)
+    public void setControllingHandIsRight(bool isRight)
     {
         rightHand = isRight;
         track = true;
@@ -95,12 +101,12 @@ public class ControlHandTracker : MonoBehaviour
         }
     }
 
-    public static void setStaticHandIsClosed(bool closed)
+    public void setStaticHandIsClosed(bool closed)
     {
         handClosed = closed;
     }
 
-    public static void stopTracking()
+    public void stopTracking()
     {
         track = false;
     }

@@ -15,7 +15,7 @@ public class TriggerZoneScript : MonoBehaviour
     {
         handIsSet = false;
         facingUp = true;
-        MidiController.setPalmFacingUp(facingUp);
+        MidiController.getInstance().setPalmFacingUp(facingUp);
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class TriggerZoneScript : MonoBehaviour
             {
                 if (!handIsSet)
                 {
-                    ControlHandTracker.setControllingHandIsRight(!handModel.GetLeapHand().IsRight);
+                    ControlHandTracker.getInstance().setControllingHandIsRight(!handModel.GetLeapHand().IsRight);
                     handIsSet = true;
                 }
                 bool res = Vector3.Cross(handModel.GetLeapHand().PalmNormal.ToVector3(), Vector3.forward).x > 0;
@@ -35,20 +35,20 @@ public class TriggerZoneScript : MonoBehaviour
                 {
                     Debug.Log("palm facing Up : " + res);
                     facingUp = res;
-                    MidiController.setPalmFacingUp(facingUp);
+                    MidiController.getInstance().setPalmFacingUp(facingUp);
                 }
                 bool closed = handModel.GetLeapHand().GrabStrength > 0.6;
                 if (closed != handIsClosed)
                 {
                     Debug.Log("hand is closed : " + closed);
                     handIsClosed = closed;
-                    ControlHandTracker.setStaticHandIsClosed(handIsClosed);
+                    ControlHandTracker.getInstance().setStaticHandIsClosed(handIsClosed);
                 }
             }
             else if (handIsSet)
             {
                 handIsSet = false;
-                ControlHandTracker.stopTracking();
+                ControlHandTracker.getInstance().stopTracking();
                 foreach (MeshRenderer child in gameObject.GetComponentsInChildren<MeshRenderer>())
                 {
                     child.material.color = Color.white;

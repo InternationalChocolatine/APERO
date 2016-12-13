@@ -18,10 +18,10 @@ public class ChannelSwitch : MonoBehaviour
 
     void OnTriggerEnter()
     {
-        if (MidiController.getChannelGroup() != channelGroup)
+        if (MidiController.getInstance().getChannelGroup() != channelGroup)
         {
             GetComponent<MeshRenderer>().material.color = Color.green;
-            MidiController.setChannelGroup(this);
+            MidiController.getInstance().setChannelGroup(this);
 
         }
     }
