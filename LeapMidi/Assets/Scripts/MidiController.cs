@@ -204,6 +204,7 @@ public class MidiController : MonoBehaviour
 
             ChannelMessage message = new ChannelMessage(ChannelCommand.Controller, 0, activeSwitch.channelGroup + offset + 1, rotationValue);
             outputDevice.Send(message);
+            Debug.Log(angle);
         }  
     }
 
